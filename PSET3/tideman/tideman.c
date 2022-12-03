@@ -137,6 +137,30 @@ void record_preferences(int ranks[])
 void add_pairs(void)
 {
     // TODO
+	// loop over preferences array
+	for (int i = 0; i < candidate_count; i++)
+	{
+		for (int j = 0; j < candidate_count; j++)
+		{
+				{
+				// if more people prefer i over j rather then the converse...
+				if( preferences[i][j] > preferences[j][i] )
+				{
+
+						// ... record pair i,j in the pairs array
+						pairs[pair_count].winner = i;
+						pairs[pair_count].loser =j;
+
+						// update pair count
+						pair_count++;
+
+
+				}
+				
+				}
+						
+		}
+		}
     return;
 }
 
