@@ -1,5 +1,6 @@
 #include <cs50.h>
 #include <stdio.h>
+#include <string.h>
 
 // Max number of candidates
 #define MAX 9
@@ -18,7 +19,8 @@ typedef struct
 }
 pair;
 
-// Array of candidates
+// Array of candida1es
+
 string candidates[MAX];
 pair pairs[MAX * (MAX - 1) / 2];
 
@@ -99,8 +101,17 @@ int main(int argc, string argv[])
 // Update ranks given a new vote
 bool vote(int rank, string name, int ranks[])
 {
-    // TODO
-    return false;
+	// Loop over candidate list and check if *name* is the name of a candidate
+	for (int i = 0; i < candidate_count; i++)
+	{
+			if ( strcmp (name, candidates[i]) == 0 )
+			{
+					ranks[rank] = i;	// update ranks array
+					return true;
+			}
+	}
+
+	return false;
 }
 
 // Update preferences given one voter's ranks
