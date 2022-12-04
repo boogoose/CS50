@@ -34,6 +34,7 @@ void add_pairs(void);
 void sort_pairs(void);
 void lock_pairs(void);
 void print_winner(void);
+void merge_sort(pair pairs[], int p, int q);
 
 int main(int argc, string argv[])
 {
@@ -101,66 +102,53 @@ int main(int argc, string argv[])
 // Update ranks given a new vote
 bool vote(int rank, string name, int ranks[])
 {
-	// Loop over candidate list and check if *name* is the name of a candidate
-	for (int i = 0; i < candidate_count; i++)
-	{
-			if ( strcmp (name, candidates[i]) == 0 )
-			{
-					ranks[rank] = i;	// update ranks arry
-					return true;
-			}
-	}
-
-	return false;
+// Loop over candidate list and check if *name* is the name of a candidate
+    for (int i = 0; i < candidate_count; i++)
+    {
+        if (strcmp(name, candidates[i]) == 0)
+        {
+            ranks[rank] = i;    // update ranks arry
+            return true;
+        }
+    }
+    return false;
 }
 
 // Update preferences given one voter's ranks
 void record_preferences(int ranks[])
 {
-    // TODO
-	// loop over voter's preferences (the *ranks* array)
-	for ( int i = 0; i < candidate_count; i++)
-	{
-		// loop over voter's lower-ordered preferences
-		for ( int j = i + 1; j < candidate_count; j++)
-		{
-				// increment global preferences count
-				preferences[ranks[i]][ranks[j]]++;
-		}
-
-	}
-
+// loop over voter's preferences (the *ranks* array)
+    for (int i = 0; i < candidate_count; i++)
+    {
+        // loop over voter's lower-ordered preferences
+        for (int j = i + 1; j < candidate_count; j++)
+        {
+            // increment global preferences count
+            preferences[ranks[i]][ranks[j]]++;
+        }
+    }
     return;
 }
 
 // Record pairs of candidates where one is preferred over the other
 void add_pairs(void)
 {
-    // TODO
-	// loop over preferences array
-	for (int i = 0; i < candidate_count; i++)
-	{
-		for (int j = 0; j < candidate_count; j++)
-		{
-				{
-				// if more people prefer i over j rather then the converse...
-				if( preferences[i][j] > preferences[j][i] )
-				{
-
-						// ... record pair i,j in the pairs array
-						pairs[pair_count].winner = i;
-						pairs[pair_count].loser =j;
-
-						// update pair count
-						pair_count++;
-
-
-				}
-				
-				}
-						
-		}
-		}
+// loop over preferences array
+    for (int i = 0; i < candidate_count; i++)
+    {
+        for (int j = 0; j < candidate_count; j++)
+        {
+            // if more people prefer i over j rather then the converse...
+            if (preferences[i][j] > preferences[j][i])
+            {
+                // ... record pair i,j in the pairs array
+                pairs[pair_count].winner = i;
+                pairs[pair_count].loser = j;
+                // update pair count
+                pair_count++;
+            }
+        }
+    }
     return;
 }
 
@@ -168,6 +156,7 @@ void add_pairs(void)
 void sort_pairs(void)
 {
     // TODO
+    merge_sort(pairs, 0, pair_count - 1);
     return;
 }
 
@@ -182,5 +171,62 @@ void lock_pairs(void)
 void print_winner(void)
 {
     // TODO
+    return;
+}
+
+// Merge sort 
+void merge_sort(pair array[], int p, int q)
+{
+    // Initialise variables
+    int it_l = p;  // left-array iterator
+    int stop_l = q / 2;  // final left-side index
+    int start_r = stop_l + 1;  // initial right-side index
+    int it_r = start_r;  // right-array iterator
+    pair buffer[q - p + 1];
+    int it_b = 0;   // buffer iterator
+
+    // Base Case: array length = 1
+    if (p == q)
+    {
+        return;
+    }
+    // Sort left side array
+    merge_sort(pairs, p, stop_l);
+
+    // Sort Right side array
+    merge_sort(pairs, start_r, q);
+
+    // Merge left & right sides
+
+    // Loop over left-side elements, compare with current-initial right side element, and copy highest to buffer
+    while ((it_l <= stop_l) || (it_r <= q)) // so long as elements remain: merge!
+    {
+        bool left_is_not_empty = (it_l <= stop_l);
+        bool left_is_larger = (preferences[pairs[it_l].winner][pairs[it_l].loser] >= preferences[pairs[it_r].winner][pairs[it_r].loser]);
+        bool right_is_empty = it_r > q;
+
+        if ((left_is_not_empty && left_is_larger) ||
+            (right_is_empty))
+        {
+            buffer[it_b] = pairs[it_l];
+            it_b++;
+            it_l++;
+        }
+        else
+        {
+            buffer[it_b] = pairs[it_r];
+            it_b++;
+            it_r++;
+        }
+
+
+    }
+    // TODO
+    // check this
+    for (int i = p; i <= q; i++)
+    {
+        pairs[i] = buffer[i - p];
+    }
+    
     return;
 }
