@@ -1,0 +1,8 @@
+#!/bin/sh
+
+# Create .vscode directory if it doesn't already exist
+[[ -d ".vscode" ]] || mkdir ".vscode"
+
+# Copy relevent .json files into directory
+cp $HOME/Code/CS50/resources/json_files/c_json_vanilla/launch.json ${PWD}/.vscode/
+cp $HOME/Code/CS50/resources/json_files/c_json_vanilla/tasks.json ${PWD}/.vscode/

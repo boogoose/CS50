@@ -35,6 +35,7 @@ void sort_pairs(void);
 void lock_pairs(void);
 void print_winner(void);
 void merge_sort(pair pairs[], int p, int q);
+bool cycle(pair p);
 
 int main(int argc, string argv[])
 {
@@ -155,7 +156,6 @@ void add_pairs(void)
 // Sort pairs in decreasing order by strength of victory
 void sort_pairs(void)
 {
-    // TODO
     merge_sort(pairs, 0, pair_count - 1);
     return;
 }
@@ -164,7 +164,29 @@ void sort_pairs(void)
 void lock_pairs(void)
 {
     // TODO
+    // loop over pairs array, and lock-in each pair that doesn't create a cycle
+    for (int i = 0; i < pair_count; i++)
+        {
+            if (!(cycle(pairs[i])))
+            {
+                locked[pairs[i].winner][pairs[i].loser] = true;
+            }
+            else
+            {
+                locked[pairs[i].winner][pairs[i].loser] = false;
+            }
+            
+        }
     return;
+}
+
+bool cycle(pair p)
+{
+    //base case
+    return true;
+
+    //recursive case
+    
 }
 
 // Print the winner of the election
@@ -212,15 +234,15 @@ void merge_sort(pair array[], int p, int q)
             it_b++;
             it_l++;
         }
+
         else
         {
             buffer[it_b] = pairs[it_r];
             it_b++;
             it_r++;
         }
-
-
     }
+
     // TODO
     // check this
     for (int i = p; i <= q; i++)

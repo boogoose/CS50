@@ -1,0 +1,11 @@
+#!/bin/sh
+
+# Create build directory if necessary
+[[ -d "build" ]] || mkdir "build"
+
+# Set argument variables
+cflags="-fsanitize=signed-integer-overflow -fsanitize=undefined -ggdb3 -O0 -std=c11 -Wall -Werror -Wextra -Wno-sign-compare -Wno-unused-parameter -Wno-unused-variable -Wshadow"
+ldlibs="-lcrypt -lcs50 -lm"
+
+# compile to build directory
+clang $cflags $ldlibs ${PWD}/"$1.c" -o ${PWD}/build/"$1"
